@@ -14,7 +14,7 @@ server.use('/api/v1/managers/employees', employeesRouter)
 // server.use('/api/v1/jobs/managers', employeesRouter)
 server.use('/api/v1/jobs', jobsRouter)
 server.use('/api/v1/clients', clientRouter)
-
+server.use('/api/v1/employees', employeesRouter)
 if (process.env.NODE_ENV === 'production') {
   server.use(express.static(Path.resolve('public')))
   server.use('/assets', express.static(Path.resolve('./dist/assets')))

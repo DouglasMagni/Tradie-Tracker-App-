@@ -16,16 +16,20 @@ const db = connection
 
 //manager can see all the employees that the manager created
 //it's a join table, looking at manager_id in the jobs table, and the employee id in the employee table.
-export async function getAllEmpByManagerId(managerId: number) {
-  console.log('managerId:', managerId)
-  return await db('employees')
-    .select()
-    .whereExists(function () {
-      this.select('*')
-        .from('jobs')
-        .whereRaw('jobs.employee_id = employees.id')
-        .andWhere('jobs.manager_id', managerId)
-    })
+// export async function getAllEmpByManagerId(managerId: number) {
+//   console.log('managerId:', managerId)
+//   return await db('employees')
+//     .select()
+//     .whereExists(function () {
+//       this.select('*')
+//         .from('jobs')
+//         .whereRaw('jobs.employee_id = employees.id')
+//         .andWhere('jobs.manager_id', managerId)
+//     })
+// }
+
+export async function getAllEmployees() {
+  return await db('employees').select()
 }
 //manager can see the employee details
 export async function getEmpByManagerId(managerId: number, employeeId: number) {

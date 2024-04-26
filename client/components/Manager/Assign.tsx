@@ -1,18 +1,19 @@
 import { useState } from 'react'
+import { useEmployees } from '../../../client/hooks/useEmployees' // Adjust the import path as needed
+import { useJobById } from '../../hooks/useJobs'
 
-import { useJobById, useJobs } from '../../hooks/useJobs'
-
-const employees = [
-  { id: 1, name: 'Lionel Messi' },
-  { id: 2, name: 'Johnnie Walker' },
-  { id: 3, name: 'Lucas' },
-]
+interface Employee {
+  id: number
+  name: string
+}
 
 interface Id {
   id: number
 }
+
 function Assign({ id }: Id) {
   const { data, isLoading, isError, error } = useJobById(id)
+  const { data: employeesData } = useEmployees()
   const [selectedEmployee, setSelectedEmployee] = useState<number | null>(null)
 
   if (isLoading) {
@@ -20,11 +21,6 @@ function Assign({ id }: Id) {
   }
   if (isError) {
     return <p>Error: {error?.message}</p>
-  }
-
-  const handleAssignEmployee = (jobId: number, employeeId: number | null) => {
-    // Your logic to assign the selected employee to the job
-    console.log(`Assign employee ${employeeId} to job ${jobId}`)
   }
 
   if (data) {
@@ -35,7 +31,7 @@ function Assign({ id }: Id) {
           value={selectedEmployee ?? data.employee_id}
           onChange={(e) => setSelectedEmployee(parseInt(e.target.value))}
         >
-          {employees.map((employee) => (
+          {employeesData?.map((employee: Employee) => (
             <option key={employee.id} value={employee.id}>
               {employee.name}
             </option>
