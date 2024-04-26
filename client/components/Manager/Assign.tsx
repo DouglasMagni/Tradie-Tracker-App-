@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useEmployees } from '../../../client/hooks/useEmployees' // Adjust the import path as needed
+import { useState, useEffect } from 'react'
+import { useEmployees } from '../../../client/hooks/useEmployees'
 import { useJobById } from '../../hooks/useJobs'
 
 interface Employee {
@@ -13,8 +13,21 @@ interface Id {
 
 function Assign({ id }: Id) {
   const { data, isLoading, isError, error } = useJobById(id)
-  const { data: employeesData } = useEmployees()
+  const [employeesData, setEmployeesData] = useState<Employee[]>([])
   const [selectedEmployee, setSelectedEmployee] = useState<number | null>(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const employees = await useEmployees()
+        setEmployeesData(employees)
+      } catch (error) {
+        console.error('Error fetching employees:', error)
+      }
+    }
+
+    fetchData()
+  }, [])
 
   if (isLoading) {
     return <p>Loading...</p>
@@ -22,7 +35,7 @@ function Assign({ id }: Id) {
   if (isError) {
     return <p>Error: {error?.message}</p>
   }
-
+  // console.log(employeesData)
   if (data) {
     return (
       <>
@@ -31,7 +44,7 @@ function Assign({ id }: Id) {
           value={selectedEmployee ?? data.employee_id}
           onChange={(e) => setSelectedEmployee(parseInt(e.target.value))}
         >
-          {employeesData?.map((employee: Employee) => (
+          {employeesData.map((employee: Employee) => (
             <option key={employee.id} value={employee.id}>
               {employee.name}
             </option>

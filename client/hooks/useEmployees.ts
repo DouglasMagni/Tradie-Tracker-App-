@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
+import { Employee } from '../../models/employees'
 
 export async function useEmployees() {
-  const [employees, setEmployees] = useState([])
+  const [employees, setEmployees] = useState<Employee[]>([])
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -22,9 +23,9 @@ export async function useEmployees() {
 
     // Cleanup function if needed
     return () => {
-      ;[]
+      // Cleanup logic if needed
     }
   }, [])
 
-  return [employees]
+  return employees
 }
