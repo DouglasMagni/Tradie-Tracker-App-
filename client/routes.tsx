@@ -17,7 +17,7 @@ export default createRoutesFromElements(
     <Route index path="/" element={<WelcomePage />} />
     <Route path="/jobs/manager" element={<JobsList />} />
     <Route path="/jobs/manager/:id" element={<JobDetail />} />
-    <Route path="//manager/add" element={<AddJob />} />
+    <Route path="/manager/add" element={<AddJob />} />
     <Route path="/jobs/manager/complete" element={<ManagerComplete />} />
     <Route path="/jobs/employeeLogin" element={<EmployeeLogin />} />
     <Route path="/jobs/employee/:id" element={<Schedule />} />

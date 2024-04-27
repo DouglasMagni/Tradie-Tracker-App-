@@ -1,19 +1,33 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useEmployees } from '../../../client/hooks/useEmployees'
+import { useJobById } from '../../hooks/useJobs'
 
-import { useJobById, useJobs } from '../../hooks/useJobs'
-
-const employees = [
-  { id: 1, name: 'Lionel Messi' },
-  { id: 2, name: 'Johnnie Walker' },
-  { id: 3, name: 'Lucas' },
-]
+interface Employee {
+  id: number
+  name: string
+}
 
 interface Id {
   id: number
 }
+
 function Assign({ id }: Id) {
   const { data, isLoading, isError, error } = useJobById(id)
+  const [employeesData, setEmployeesData] = useState<Employee[]>([])
   const [selectedEmployee, setSelectedEmployee] = useState<number | null>(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const employees = await useEmployees()
+        setEmployeesData(employees)
+      } catch (error) {
+        console.error('Error fetching employees:', error)
+      }
+    }
+
+    fetchData()
+  }, [])
 
   if (isLoading) {
     return <p>Loading...</p>
@@ -21,12 +35,7 @@ function Assign({ id }: Id) {
   if (isError) {
     return <p>Error: {error?.message}</p>
   }
-
-  const handleAssignEmployee = (jobId: number, employeeId: number | null) => {
-    // Your logic to assign the selected employee to the job
-    console.log(`Assign employee ${employeeId} to job ${jobId}`)
-  }
-
+  // console.log(employeesData)
   if (data) {
     return (
       <>
@@ -35,7 +44,7 @@ function Assign({ id }: Id) {
           value={selectedEmployee ?? data.employee_id}
           onChange={(e) => setSelectedEmployee(parseInt(e.target.value))}
         >
-          {employees.map((employee) => (
+          {employeesData.map((employee: Employee) => (
             <option key={employee.id} value={employee.id}>
               {employee.name}
             </option>

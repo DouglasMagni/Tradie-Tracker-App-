@@ -1,17 +1,26 @@
 import express from 'express'
 import * as db from '../db/employees'
+import cors from 'cors'
+
+const corsOptions = {
+  origin: 'http://localhost:5173', // Replace with your frontend domain
+  methods: 'GET,POST',
+  allowedHeaders: 'Content-Type,Authorization',
+}
 
 const router = express.Router()
-//manager can see the employees list created by the manager
-router.get('/:managerId', async (req, res) => {
-  const managerId = Number(req.params.managerId)
+router.use(cors(corsOptions))
+
+router.get('/', async (req, res) => {
   try {
-    const data = await db.getAllEmpByManagerId(managerId)
+    const data = await db.getAllEmployees()
     res.json(data)
   } catch (e) {
     console.log(e)
+    res.status(500).json({ error: 'Internal Server Error' })
   }
 })
+
 //manager can see the employee details
 router.get('/:managerId/:employeeId', async (req, res) => {
   const managerId = Number(req.params.managerId)
