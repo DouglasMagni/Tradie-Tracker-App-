@@ -1,6 +1,15 @@
 import { Link, Outlet } from 'react-router-dom'
-
+import { useAuth0 } from '@auth0/auth0-react'
 function WelcomePage() {
+  const { isAuthenticated, loginWithRedirect, logout } = useAuth0()
+
+  const handleLogin = () => {
+    loginWithRedirect()
+  }
+
+  const handleLogout = () => {
+    logout()
+  }
   return (
     <>
       <div className="layout">
@@ -16,6 +25,11 @@ function WelcomePage() {
           <Link to="/jobs/employeeLogin">
             <button className="employee login-button">Employee</button>
           </Link>
+          {isAuthenticated ? (
+            <button onClick={handleLogout}>Logout</button>
+          ) : (
+            <button onClick={handleLogin}>Login</button>
+          )}
           <Outlet />
         </div>
       </div>
