@@ -5,8 +5,19 @@ import plus from '/images/plus.svg'
 import notify from '/images/notify.svg'
 import complete from '/images/completeJ.svg'
 import profile from '/images/profile.svg'
+import { useAuth0 } from '@auth0/auth0-react'
 
 function ManagerNavbar() {
+  const { isAuthenticated, loginWithRedirect, logout } = useAuth0()
+
+  const handleLogin = () => {
+    loginWithRedirect()
+  }
+
+  const handleLogout = () => {
+    logout()
+  }
+
   return (
     <div className="nav-container">
       <div className="manager-bg-color">
@@ -32,6 +43,11 @@ function ManagerNavbar() {
           <Link to={`/jobs/manager/:id/profile`}>
             <img className="nav-icon" alt="profile-icon" src={profile}></img>
           </Link>
+          {isAuthenticated ? (
+            <button onClick={handleLogout}>Logout</button>
+          ) : (
+            <button onClick={handleLogin}>Login</button>
+          )}
         </div>
       </div>
     </div>
