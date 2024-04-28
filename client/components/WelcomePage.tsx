@@ -25,11 +25,7 @@ function WelcomePage() {
           <Link to="/jobs/employeeLogin">
             <button className="employee login-button">Employee</button>
           </Link>
-          {isAuthenticated ? (
-            <button onClick={handleLogout}>Logout</button>
-          ) : (
-            <button onClick={handleLogin}>Login</button>
-          )}
+
           <Outlet />
         </div>
       </div>

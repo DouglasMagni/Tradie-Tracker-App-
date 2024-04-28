@@ -14,10 +14,10 @@ import ManagerProf from './components/Manager/MangerProf.tsx'
 import Login from './components/Login.tsx' // Import the Login component
 
 export default createRoutesFromElements(
-  <Route path="/" element={<App />}>
-    <Route path="/login" element={<Login />} />
+  <Route path="/" element={<WelcomePage />}>
+    <Route path="/" element={<Login />} />
+    {/* <Route path="/welcomePage" element={<WelcomePage />} /> */}
     <Route path="/jobs/employeeLogin" element={<EmployeeLogin />} />
-    <Route index path="/" element={<WelcomePage />} />
     <Route path="/jobs/manager" element={<JobsList />} />
     <Route path="/jobs/manager/:id" element={<JobDetail />} />
     <Route path="/manager/add" element={<AddJob />} />
